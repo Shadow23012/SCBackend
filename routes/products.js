@@ -2,13 +2,13 @@ var express = require('express');
 var router = express.Router();
 const productModel = require ('../models/productModel');
 
-/* GET users listing. */
+/* GET product listing. */
 router.get('/', async function(req, res, next) {
   const resultado = await productModel.find();
   res.json(resultado);
 });
 
-/* POST users add. */
+/* POST product add. */
 router.post('/', async function(req, res, next) {
   let datos = {
     id: req.body.id,
@@ -25,10 +25,14 @@ router.post('/', async function(req, res, next) {
   res.send('Registro agregado exitosamente');
 });
 
-/* PUT users edit. */
+/* PUT product edit. */
 router.put('/', async function(req, res, next) {
   const filter = {id: req.query.id}; //Condición de Query
-  const update = {name: req.query.name}; //Campos a modificar
+  const update = {name: req.query.name,
+                  description: req.query.description,
+                  price: req.query.price,
+                  stock: req.query.stock,
+                  images: req.query.images}; //Campos a modificar
 
 
   const resultado = await productModel.findOneAndUpdate(filter, update, {
@@ -40,7 +44,7 @@ router.put('/', async function(req, res, next) {
   res.json("Se actualiza el producto");
 });
 
-/* DELETE users delete. */
+/* DELETE product delete. */
 router.delete('/:id', async function(req, res, next) {
   const resul = await productModel.find({id: req.params.id}).exec();
 
